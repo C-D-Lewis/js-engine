@@ -42,4 +42,5 @@ const draw = (ctx) => {
   box = new Box([0, 0, 40, 40], 'red', 10);
 
   engine = new Engine({ update, draw });
+  engine.begin();
 })();

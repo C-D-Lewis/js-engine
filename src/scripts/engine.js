@@ -32,7 +32,4 @@ function Engine(handlers) {
     self.canvas.width = window.innerWidth;
     self.canvas.height = window.innerHeight;
   };
-
-  self.begin();
-  return self;
 }
