@@ -1,5 +1,3 @@
-let engine, box;
-
 function Box(bounds, color, delta) {
   const self = this;
 
@@ -27,20 +25,3 @@ function Box(bounds, color, delta) {
     ctx.fillRect(self.x, self.y, self.width, self.height);
   };
 };
-
-const update = () => {
-  box.update();
-};
-
-const draw = (ctx) => {
-  box.draw(ctx);
-};
-
-(() => {
-  console.log(`${GAME_NAME} start`);
-
-  box = new Box([0, 0, 40, 40], 'red', 10);
-
-  engine = new Engine({ update, draw });
-  engine.begin();
-})();
