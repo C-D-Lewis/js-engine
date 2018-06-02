@@ -7,7 +7,9 @@ function Engine({ handlers, canvasId }) {
 
     window.addEventListener('mousemove', self.onMouseMove, false);
     self.canvas.addEventListener('click', self.onMouseClick, false);
-    window.addEventListener('resize', self.resetSize);
+    window.addEventListener('resize', self.resetSize, false);
+    window.addEventListener('keydown', self.onKeyDown, false);
+    window.addEventListener('keyup', self.onKeyUp, false);
 
     self.resetSize();
     self.loop();
@@ -45,6 +47,18 @@ function Engine({ handlers, canvasId }) {
       y: e.pageY - self.canvas.offsetTop
     });
   };
+
+  self.onKeyDown = function(e) {
+    if (!self.handlers.keyDown) return;
+
+    self.handlers.keyDown(e.key);
+  };
+
+  self.onKeyUp = function(e) {
+    if (!self.handlers.keyUp) return;
+
+    self.handlers.keyUp(e.key);
+  }
 
   self.resetSize = function() {
     self.width = window.innerWidth;
