@@ -1,0 +1,13 @@
+{
+  "name": "test-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "./node_modules/.bin/browserify src/main.js > ./bundle.js"
+  },
+  "author": "Chris Lewis",
+  "dependencies": {
+    "browserify": "^16.2.2"
+  }
+}

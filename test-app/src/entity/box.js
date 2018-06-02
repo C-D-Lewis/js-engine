@@ -1,12 +1,10 @@
-function Box(bounds, color, delta) {
+function Box(engine, bounds, color, delta) {
   const self = this;
 
   self.x = bounds[0];
   self.y = bounds[1];
   self.width = bounds[2];
   self.height = bounds[3];
-  self.color = color;
-  self.delta = delta;
   self.dx = delta;
   self.dy = delta;
 
@@ -21,7 +19,9 @@ function Box(bounds, color, delta) {
   };
 
   self.draw = function(ctx) {
-    ctx.fillStyle = self.color;
+    ctx.fillStyle = color;
     ctx.fillRect(self.x, self.y, self.width, self.height);
   };
 };
+
+module.exports = Box;
