@@ -1,32 +1,30 @@
 # js-engine
 
-Attempt at a simple from-scratch game engine for the browser.
+Attempt at a simple from-scratch game engine for the browser, using TypeScript.
 
 
 ## Usage
 
 See `test-app` for project setup and to serve as an example.
 
-Require `engine.js` and instantiate with `canvasId` of the `<canvas>` element to draw in, and `handlers` as required for I/O callbacks:
+Require `engine` and instantiate with `canvasId` of the `<canvas>` element to draw in, and `handlers` as required for I/O callbacks:
 
-```js
-const Engine = require('./engine/engine');
+```ts
+import Engine from './engine/engine';
+
+const CANVAS_ID: string = 'canvas_engine';
 
 (() => {
-  const engine = new Engine({
-    canvasId: '',
-    handlers: {
-      update: () => {},
-      draw: ctx => {},
-      mouseMove: pos => {},
-      mouseClick: pos => {},
-      keyDown: key => {},
-      keyUp: key => {}
-    }
+  const engine: Engine = new Engine(CANVAS_ID, {
+    update: (): void => {},
+    draw: (ctx: any) => {},
+    mouseMove: (): void => {},
+    mouseClick: (): void => {},
+    keyDown: (): void => {},
+    keyUp: (): void => {}
   });
-  
-  // Set up other stuff
-  
+
   engine.begin();
 })();
+
 ```
