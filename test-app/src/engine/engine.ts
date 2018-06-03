@@ -3,8 +3,8 @@ declare const window: any;
 export default class Engine {
 
   private canvas: any;
-  private width: number = 0;
-  private height: number = 0;
+  public width: number = 0;
+  public height: number = 0;
 
   constructor(canvasId: string, private handlers: any) {
     this.canvas = document.getElementById(canvasId);

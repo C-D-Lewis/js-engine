@@ -1,3 +1,4 @@
+import { Bounds } from './engine/types';
 import Engine from './engine/engine';
 import Box from './entity/box';
 
@@ -14,7 +15,7 @@ const addBox = (): void => {
   const size = randomInt(10, 200);
   const color = `rgb(${randomInt(10, 230)},${randomInt(10, 230)},${randomInt(10, 230)})`;
   const speed = randomInt(2, 10);
-  boxes.push(new Box(engine, [0, 0, size, size], color, speed));
+  boxes.push(new Box(engine, new Bounds(0, 0, size, size), color, speed));
 };
 
 (() => {
