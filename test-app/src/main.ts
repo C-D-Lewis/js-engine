@@ -1,4 +1,7 @@
-import { Bounds } from './engine/types';
+import {
+  Bounds, Point
+} from './engine/types';
+import * as Graphics from './engine/graphics';
 import Engine from './engine/engine';
 import Box from './entity/box';
 
@@ -23,7 +26,11 @@ const addBox = (): void => {
 
   engine = new Engine(CANVAS_ID, {
     update: (): void => boxes.forEach(item => item.update()),
-    draw: (ctx: any) => boxes.forEach(item => item.draw(ctx)),
+    draw: (ctx: any): void => {
+      boxes.forEach(item => item.draw(ctx));
+
+      Graphics.drawText(ctx, '' + boxes.length, 'red', new Point(50, 50));
+    },
     mouseMove: (): void => {},
     mouseClick: (): void => {},
     keyDown: addBox,
