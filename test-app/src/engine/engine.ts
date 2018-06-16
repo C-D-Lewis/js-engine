@@ -1,3 +1,8 @@
+import * as Graphics from './graphics';
+import {
+  Point
+} from './types';
+
 declare const window: any;
 
 export default class Engine {
@@ -5,12 +10,16 @@ export default class Engine {
   private canvas: any;
   public width: number = 0;
   public height: number = 0;
+  private lastFpsTime: number = 0;
+  private fpsCounter: number = 0;
+  private fpsCount: number = 0;
+  private firstFrame: boolean = false;
 
-  constructor(canvasId: string, private handlers: any) {
+  constructor(canvasId: string, private handlers: any, private options: any) {
     this.canvas = document.getElementById(canvasId);
   }
 
-  begin(): void {
+  begin() {
     const self: Engine = this;
 
     window.addEventListener('mousemove', (e: any) => self.onMouseMove(e), false);
@@ -23,22 +32,41 @@ export default class Engine {
     this.loop();
   }
 
-  loop(): void {
-    const loopCallback = (): void => this.loop();
-    window.requestAnimationFrame(loopCallback);
+  drawFps(ctx: any) {
+    const now = new Date().getTime();
+    this.fpsCounter += 1;
+    if (now - this.lastFpsTime > 1000) {
+      this.lastFpsTime = now;
+      this.fpsCount = this.fpsCounter;
+      this.fpsCounter = 0;
+    }
 
-    this.handlers.update();
+    Graphics.drawText(ctx, `${this.fpsCount} FPS`, 'white', new Point(50, 50));
+  }
+
+  loop() {
+    const loopCallback = () => this.loop();
+    window.requestAnimationFrame(loopCallback);
 
     const ctx: any = this.canvas.getContext('2d');
     ctx.width = this.width;
     ctx.height = this.height;
 
+    if (!this.firstFrame && ctx.width != 0) {
+      this.firstFrame = true;
+      this.handlers.init();
+    }
+
+    this.handlers.update();
+
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, ctx.width, ctx.height);
     this.handlers.draw(ctx);
+
+    if (this.options.debug) this.drawFps(ctx);
   }
 
-  onMouseMove(e: any): void {
+  onMouseMove(e: any) {
     if (!this.handlers.mouseMove) return;
 
     const boundingRect: any = this.canvas.getBoundingClientRect();
@@ -48,7 +76,7 @@ export default class Engine {
     });
   }
 
-  onMouseClick(e: any): void {
+  onMouseClick(e: any) {
     if (!this.handlers.mouseClick) return;
 
     this.handlers.mouseClick({
@@ -57,19 +85,19 @@ export default class Engine {
     });
   }
 
-  onKeyDown(e: any): void {
+  onKeyDown(e: any) {
     if (!this.handlers.keyDown) return;
 
     this.handlers.keyDown(e.key);
   }
 
-  onKeyUp(e: any): void {
+  onKeyUp(e: any) {
     if (!this.handlers.keyUp) return;
 
     this.handlers.keyUp(e.key);
   }
 
-  resetSize(): void {
+  resetSize() {
     this.width = window.innerWidth;
     this.height = window.innerHeight;
     this.canvas.width = window.innerWidth;

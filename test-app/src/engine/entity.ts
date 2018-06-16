@@ -1,9 +1,8 @@
 import { Bounds } from './types';
-import Engine from './engine';
 
 export default abstract class Entity {
 
-  constructor(protected engine: Engine, protected bounds: Bounds) {}
+  constructor(protected bounds: Bounds) {}
 
   abstract update(): void;
 
