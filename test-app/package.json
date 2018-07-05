@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "./compile.sh"
+    "build": "./compile.sh",
+    "serve": "python -m SimpleHTTPServer"
   },
   "author": "Chris Lewis",
   "dependencies": {

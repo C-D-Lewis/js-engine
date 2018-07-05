@@ -14,26 +14,24 @@ let bouncingBox: BouncingBox;
 (() => {
   console.log(`${GAME_NAME} start`);
 
-  engine = new Engine(CANVAS_ID, {
-    init: () => {
-      bouncingBox = new BouncingBox(engine, new Bounds(0, 0, 100, 100), 'blue', 10);
+  engine = new Engine({
+    canvasId: CANVAS_ID,
+    handlers: {
+      init: () => {
+        bouncingBox = new BouncingBox(engine, new Bounds(0, 0, 100, 100), 'red', 10);
+      },
+      update: () => {
+        bouncingBox.update();
+      },
+      draw: (ctx: any) => {
+        bouncingBox.draw(ctx);
+      },
+      mouseMove: () => {},
+      mouseClick: () => {},
+      keyDown: () => {},
+      keyUp: () => {},
     },
-    update: () => {
-      bouncingBox.update();
-    },
-    draw: (ctx: any) => {
-      bouncingBox.draw(ctx);
-    },
-    mouseMove: () => {},
-    mouseClick: () => {},
-    keyDown: () => {
-
-    },
-    keyUp: () => {
-
-    }
-  }, {
-    debug: true
+    debug: true,
   });
 
   engine.begin();
