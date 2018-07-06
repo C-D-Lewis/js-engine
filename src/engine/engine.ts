@@ -1,13 +1,12 @@
 import * as Graphics from './graphics';
-import {
-  Point
-} from './types';
+import { Point } from './types';
 
 declare const window: any;
 
 export default class Engine {
 
   private canvas: any;
+  private handlers: any;
   public width: number = 0;
   public height: number = 0;
   private lastFpsTime: number = 0;
@@ -15,8 +14,9 @@ export default class Engine {
   private fpsCount: number = 0;
   private firstFrame: boolean = false;
 
-  constructor(canvasId: string, private handlers: any, private options: any) {
-    this.canvas = document.getElementById(canvasId);
+  constructor(private options: any) {
+    this.canvas = document.getElementById(options.canvasId);
+    this.handlers = options.handlers;
   }
 
   begin() {

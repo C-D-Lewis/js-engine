@@ -12,5 +12,15 @@ export default abstract class Entity {
     this.bounds.x += dx;
     this.bounds.y += dy;
   }
+  
+  // If any corners are inside
+  intersects(other: Entity) {
+    const otherBounds = other.getBounds();
+    
+  }
+  
+  getBounds(): Bounds {
+    return this.bounds;
+  }
 
 }

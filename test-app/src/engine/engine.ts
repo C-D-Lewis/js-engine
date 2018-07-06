@@ -1,7 +1,5 @@
 import * as Graphics from './graphics';
-import {
-  Point
-} from './types';
+import { Point } from './types';
 
 declare const window: any;
 
