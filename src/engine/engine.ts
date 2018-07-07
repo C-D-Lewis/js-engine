@@ -3,15 +3,32 @@ import { Point } from './types';
 
 declare const window: any;
 
+class FpsCounter {
+  private lastUpdateTime: number = 0;
+  private counter: number = 0;
+  private current: number = 0;
+  
+  draw(ctx: any) {
+    const now = new Date().getTime();
+    this.counter += 1;
+    if (now - this.lastUpdateTime > 1000) {
+      this.lastUpdateTime = now;
+      this.current = this.counter;
+      this.counter = 0;
+    }
+
+    Graphics.drawText(ctx, `${this.current} FPS`, 'white', new Point(50, 50));
+  }
+  
+}
+
 export default class Engine {
 
   private canvas: any;
   private handlers: any;
   public width: number = 0;
   public height: number = 0;
-  private lastFpsTime: number = 0;
-  private fpsCounter: number = 0;
-  private fpsCount: number = 0;
+  public fpsCounter: FpsCounter = new FpsCounter();
   private firstFrame: boolean = false;
 
   constructor(private options: any) {
@@ -30,18 +47,6 @@ export default class Engine {
 
     this.resetSize();
     this.loop();
-  }
-
-  drawFps(ctx: any) {
-    const now = new Date().getTime();
-    this.fpsCounter += 1;
-    if (now - this.lastFpsTime > 1000) {
-      this.lastFpsTime = now;
-      this.fpsCount = this.fpsCounter;
-      this.fpsCounter = 0;
-    }
-
-    Graphics.drawText(ctx, `${this.fpsCount} FPS`, 'white', new Point(50, 50));
   }
 
   loop() {
@@ -63,7 +68,7 @@ export default class Engine {
     ctx.fillRect(0, 0, ctx.width, ctx.height);
     this.handlers.draw(ctx);
 
-    if (this.options.debug) this.drawFps(ctx);
+    if (this.options.debug) this.fpsCounter.draw(ctx);
   }
 
   onMouseMove(e: any) {
