@@ -1,35 +1,20 @@
 import * as Graphics from './graphics';
 import { Point } from './types';
+import Entity from './entity';
 
 declare const window: any;
 
-class FpsCounter {
-  private lastUpdateTime: number = 0;
-  private counter: number = 0;
-  private current: number = 0;
-  
-  draw(ctx: any) {
-    const now = new Date().getTime();
-    this.counter += 1;
-    if (now - this.lastUpdateTime > 1000) {
-      this.lastUpdateTime = now;
-      this.current = this.counter;
-      this.counter = 0;
-    }
-
-    Graphics.drawText(ctx, `${this.current} FPS`, 'white', new Point(50, 50));
-  }
-  
-}
-
 export default class Engine {
+  
+  public width: number = 0;
+  public height: number = 0;
+  public collisionManager: CollisionManager = new CollisionManager();
 
   private canvas: any;
   private handlers: any;
-  public width: number = 0;
-  public height: number = 0;
-  public fpsCounter: FpsCounter = new FpsCounter();
+  private fpsCounter: FpsCounter = new FpsCounter();
   private firstFrame: boolean = false;
+  private paused: boolean = false;
 
   constructor(private options: any) {
     this.canvas = document.getElementById(options.canvasId);
@@ -37,23 +22,30 @@ export default class Engine {
   }
 
   begin() {
-    const self: Engine = this;
+    const self = this;
 
-    window.addEventListener('mousemove', (e: any) => self.onMouseMove(e), false);
-    this.canvas.addEventListener('click', (e: any) => self.onMouseClick(e), false);
     window.addEventListener('resize', (e: any) => self.resetSize(), false);
     window.addEventListener('keydown', (e: any) => self.onKeyDown(e), false);
     window.addEventListener('keyup', (e: any) => self.onKeyUp(e), false);
+    window.addEventListener('mousemove', (e: any) => self.onMouseMove(e), false);
+    this.canvas.addEventListener('click', (e: any) => self.onMouseClick(e), false);
 
     this.resetSize();
     this.loop();
   }
-
+  
+  togglePaused() {
+    this.paused = !this.paused;
+    
+    if (!this.paused) window.requestAnimationFrame(() => this.loop());
+  }
+  
   loop() {
-    const loopCallback = () => this.loop();
-    window.requestAnimationFrame(loopCallback);
-
-    const ctx: any = this.canvas.getContext('2d');
+    if (this.paused) return;
+    
+    window.requestAnimationFrame(() => this.loop());
+    
+    const ctx = this.canvas.getContext('2d');
     ctx.width = this.width;
     ctx.height = this.height;
 
@@ -63,6 +55,7 @@ export default class Engine {
     }
 
     this.handlers.update();
+    this.collisionManager.testAll();
 
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, ctx.width, ctx.height);
@@ -74,7 +67,7 @@ export default class Engine {
   onMouseMove(e: any) {
     if (!this.handlers.mouseMove) return;
 
-    const boundingRect: any = this.canvas.getBoundingClientRect();
+    const boundingRect = this.canvas.getBoundingClientRect();
     this.handlers.mouseMove({
       x: e.clientX - boundingRect.left,
       y: e.clientY - boundingRect.top
@@ -91,15 +84,11 @@ export default class Engine {
   }
 
   onKeyDown(e: any) {
-    if (!this.handlers.keyDown) return;
-
-    this.handlers.keyDown(e.key);
+    if (this.handlers.keyDown) this.handlers.keyDown(e.key);
   }
 
   onKeyUp(e: any) {
-    if (!this.handlers.keyUp) return;
-
-    this.handlers.keyUp(e.key);
+    if (!this.handlers.keyUp) this.handlers.keyUp(e.key);
   }
 
   resetSize() {
@@ -109,4 +98,48 @@ export default class Engine {
     this.canvas.height = window.innerHeight;
   }
 
+}
+
+class CollisionManager {
+  private list: Array<Entity> = [];
+  
+  add(entity: Entity) {
+    this.list.push(entity);
+  }
+  
+  remove(entity: Entity) {
+    this.list.splice(this.list.indexOf(entity), 1);
+  }
+  
+  testAll() {
+    this.list.forEach((item: Entity) => {
+      this.list.forEach((other: Entity) => {
+        if (item === other) return;
+        if (!item.collidesWith(other)) return;
+
+        item.onCollide(other);
+        other.onCollide(item);
+      });
+    });
+  }
+  
+}
+
+class FpsCounter {
+  private lastUpdateTime: number = 0;
+  private counter: number = 0;
+  private current: number = 0;
+  
+  draw(ctx: any) {
+    const now = new Date().getTime();
+    this.counter += 1;
+    if ((now - this.lastUpdateTime) > 1000) {
+      this.lastUpdateTime = now;
+      this.current = this.counter;
+      this.counter = 0;
+    }
+
+    Graphics.drawText(ctx, `${this.current} FPS`, 'white', new Point(20, 20));
+  }
+  
 }
