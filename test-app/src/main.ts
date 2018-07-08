@@ -1,5 +1,4 @@
 import { Bounds } from './engine/types';
-import * as Graphics from './engine/graphics';
 import Engine from './engine/engine';
 import BouncingBox from './entity/BouncingBox';
 

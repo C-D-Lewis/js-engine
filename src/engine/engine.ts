@@ -11,14 +11,19 @@ export default class Engine {
   public collisionManager: CollisionManager = new CollisionManager();
 
   private canvas: any;
-  private handlers: any;
   private fpsCounter: FpsCounter = new FpsCounter();
   private firstFrame: boolean = false;
   private paused: boolean = false;
 
   constructor(private options: any) {
-    this.canvas = document.getElementById(options.canvasId);
-    this.handlers = options.handlers;
+    this.canvas = document.createElement('canvas');
+    this.canvas.style.margin = 0;
+    this.canvas.style.width = '100%';
+    this.canvas.style.height = '100%';
+    this.canvas.style.top = 0;
+    this.canvas.style.left = 0;
+    this.canvas.style.position = 'absolute';
+    document.body.appendChild(this.canvas);
   }
 
   begin() {
@@ -51,44 +56,44 @@ export default class Engine {
 
     if (!this.firstFrame && ctx.width != 0) {
       this.firstFrame = true;
-      this.handlers.init();
+      this.options.init();
     }
 
-    this.handlers.update();
+    this.options.update();
     this.collisionManager.testAll();
 
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, ctx.width, ctx.height);
-    this.handlers.draw(ctx);
+    this.options.draw(ctx);
 
     if (this.options.debug) this.fpsCounter.draw(ctx);
   }
 
   onMouseMove(e: any) {
-    if (!this.handlers.mouseMove) return;
+    if (!this.options.mouseMove) return;
 
     const boundingRect = this.canvas.getBoundingClientRect();
-    this.handlers.mouseMove({
+    this.options.mouseMove({
       x: e.clientX - boundingRect.left,
       y: e.clientY - boundingRect.top
     });
   }
 
   onMouseClick(e: any) {
-    if (!this.handlers.mouseClick) return;
+    if (!this.options.mouseClick) return;
 
-    this.handlers.mouseClick({
+    this.options.mouseClick({
       x: e.pageX - this.canvas.offsetLeft,
       y: e.pageY - this.canvas.offsetTop
     });
   }
 
   onKeyDown(e: any) {
-    if (this.handlers.keyDown) this.handlers.keyDown(e.key);
+    if (this.options.keyDown) this.options.keyDown(e.key);
   }
 
   onKeyUp(e: any) {
-    if (!this.handlers.keyUp) this.handlers.keyUp(e.key);
+    if (!this.options.keyUp) this.options.keyUp(e.key);
   }
 
   resetSize() {
