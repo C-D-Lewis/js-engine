@@ -1,0 +1,18 @@
+{
+  "name": "test-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run mkBuildDir && npm run runTypescript && npm run runBrowserify && npm run rmBuildDir",
+    "serve": "python -m SimpleHTTPServer",
+    "mkBuildDir": "mkdir -p ./build",
+    "runTypescript": "./node_modules/typescript/bin/tsc",
+    "runBrowserify": "node ./node_modules/browserify/bin/cmd.js build/main.js > ./bundle.js",
+    "rmBuildDir": "rm -rf ./build"
+  },
+  "author": "Chris Lewis",
+  "dependencies": {
+    "browserify": "^16.2.2",
+    "typescript": "^2.9.1"
+  }
+}
