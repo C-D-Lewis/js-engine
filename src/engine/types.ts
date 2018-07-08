@@ -36,6 +36,11 @@ export class Bounds {
     if (this.contains(other.getBottomLeftCorner())) return true;
     if (this.contains(other.getBottomRightCorner())) return true;
     
+    if (other.contains(this.getTopLeftCorner())) return true;
+    if (other.contains(this.getTopRightCorner())) return true;
+    if (other.contains(this.getBottomLeftCorner())) return true;
+    if (other.contains(this.getBottomRightCorner())) return true;
+    
     return false;
   }
 
