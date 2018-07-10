@@ -1,28 +1,42 @@
-import { Bounds } from './engine/types';
+import {
+  Bounds,
+  Point,
+} from './engine/types';
 import Engine from './engine/engine';
-import PhysicsMover from './entity/PhysicsMover';
+import Pawn from './entity/Pawn';
+import { toRadians, randomInt } from './engine/util';
 
-let mover: PhysicsMover;
+let engine: Engine;
+let pawn: Pawn;
 
-const toRadians = (angle: number) => angle * (Math.PI / 180);
+const init = () => {
+  pawn = new Pawn(new Bounds(400, 100, 15, 15), 'red', {
+    speed: 0,
+    acceleration: 1,
+    drag: 0.3,
+    maxSpeed: 5,
+  });
+  
+  pawn.setTargetLocation(new Point(randomInt(engine.width), randomInt(engine.height)));
+  
+  setInterval(() => {
+    pawn.setTargetLocation(new Point(randomInt(engine.width), randomInt(engine.height)));
+  }, 3000);
+};
+
+const update = () => {
+  pawn.update();
+};
+
+const draw = (ctx: any) => {
+  pawn.draw(ctx);
+};
 
 (() => {
-  const engine = new Engine({
-    init: () => {
-      mover = new PhysicsMover(new Bounds(10, 10, 30, 30), 'red', {
-        speed: 1,
-        acceleration: 0.5,
-        drag: 0.01,
-        heading: toRadians(45),
-        maxSpeed: 5,
-      });
-    },
-    update: () => {
-      mover.update();
-    },
-    draw: (ctx: any) => {
-      mover.draw(ctx);
-    },
+  engine = new Engine({
+    init,
+    update,
+    draw,
     mouseMove: () => {},
     mouseClick: () => {},
     keyDown: (key: string) => {
