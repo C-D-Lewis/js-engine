@@ -144,7 +144,7 @@ class FpsCounter {
       this.counter = 0;
     }
 
-    Graphics.drawText(ctx, `${this.current} FPS`, 'white', new Point(20, 20));
+    Graphics.drawText(ctx, `${this.current} FPS`, 'white', { x: 20, y: 20 });
   }
   
 }

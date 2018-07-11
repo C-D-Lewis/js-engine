@@ -1,7 +1,18 @@
-export class Point {
+export interface Point {
+  x: number;
+  y: number;
+}
 
-  constructor(public x: number, public y: number) {}
+export interface Dimension {
+  width: number;
+  height: number;
+}
 
+export interface PhysicsProps {
+  speed: number;
+  maxSpeed: number;
+  acceleration: number;
+  drag: number;
 }
 
 export class Bounds {
@@ -14,19 +25,19 @@ export class Bounds {
   }
   
   getTopLeftCorner() {
-    return new Point(this.x, this.y);
+    return { x: this.x, y: this.y };
   }
   
   getTopRightCorner() {
-    return new Point(this.x + this.width, this.y);
+    return { x: this.x + this.width, y: this.y };
   }
   
   getBottomLeftCorner() {
-    return  new Point(this.x, this.y + this.height);
+    return  { x: this.x, y: this.y + this.height };
   }
   
   getBottomRightCorner() {
-    return new Point(this.x + this.width, this.y + this.height);
+    return { x: this.x + this.width, y: this.y + this.height };
   }
   
   // If any corners are inside

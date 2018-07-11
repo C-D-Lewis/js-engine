@@ -1,21 +1,14 @@
 import {
-  Bounds, Point,
+  Bounds, Point, PhysicsProps,
 } from '../engine/types';
 import Engine from '../engine/engine';
 import Entity from '../engine/entity';
 import { drawLine } from '../engine/graphics';
 import { toRadians } from '../engine/util';
 
-interface PhysicsProperties {
-  speed: number;
-  maxSpeed: number;
-  acceleration: number;
-  drag: number;
-}
-
 export default class Pawn extends Entity {
 
-  private physics: PhysicsProperties;
+  private physics: PhysicsProps;
   
   private dx: number;
   private dy: number;
@@ -23,7 +16,7 @@ export default class Pawn extends Entity {
   private targetHeading: number;
   private targetLocation: Point;
 
-  constructor(bounds: Bounds, private color: string, private initialPhysics: PhysicsProperties) {
+  constructor(bounds: Bounds, private color: string, private initialPhysics: PhysicsProps) {
     super(bounds);
     
     this.physics = Object.assign({}, initialPhysics);
@@ -31,7 +24,7 @@ export default class Pawn extends Entity {
     this.dy = 0;
     this.heading = 0;
     this.targetHeading = 0;
-    this.targetLocation = new Point(bounds.x, bounds.y);
+    this.targetLocation = { x: bounds.x, y: bounds.y };
   }
   
   update() {
@@ -67,9 +60,11 @@ export default class Pawn extends Entity {
   
   drawPhysics(ctx: any) {
     // Speed / heading vector
-    const origin = new Point(this.bounds.x, this.bounds.y);
-    let p2 = new Point(this.bounds.x + (this.dx * this.physics.speed),
-      this.bounds.y + (this.dy * this.physics.speed));
+    const origin = { x: this.bounds.x, y: this.bounds.y };
+    let p2 = {
+      x: this.bounds.x + (this.dx * this.physics.speed),
+      y: this.bounds.y + (this.dy * this.physics.speed),
+    };
     ctx.strokeStyle = 'pink';
     drawLine(ctx, origin, p2);
     
@@ -77,7 +72,10 @@ export default class Pawn extends Entity {
     ctx.strokeStyle = 'green';
     const headingDx = 15 * Math.sin(this.targetHeading);
     const headingDy = 15 * Math.cos(this.targetHeading);
-    p2 = new Point(this.bounds.x + headingDx, this.bounds.y + headingDy);
+    p2 = {
+      x: this.bounds.x + headingDx,
+      y: this.bounds.y + headingDy,
+    };
     drawLine(ctx, origin, p2);
     
     // targetLocation vector
