@@ -40,6 +40,10 @@ export default class Pawn extends Entity {
     this.physics.acceleration = this.isCloseToTargetLocation()
       ? 0
       : this.initialPhysics.acceleration;
+      
+    if (this.isCloseToTargetLocation()) {
+      this.snapToTarget();
+    }
     
     // Clamp speed
     if (this.physics.speed < 0) this.physics.speed = 0;
@@ -83,9 +87,14 @@ export default class Pawn extends Entity {
     drawLine(ctx, origin, this.targetLocation);
   }
   
+  snapToTarget() {
+    this.bounds.x = Math.round(this.bounds.x);
+    this.bounds.y = Math.round(this.bounds.y);
+  }
+  
   isCloseToTargetLocation() {
-    return (Math.abs(this.bounds.x - this.targetLocation.x) < (3 * this.bounds.width)) &&
-      (Math.abs(this.bounds.y - this.targetLocation.y) < (3 * this.bounds.height));
+    return (Math.abs(this.bounds.x - this.targetLocation.x) < (1 * this.bounds.width)) &&
+      (Math.abs(this.bounds.y - this.targetLocation.y) < (1 * this.bounds.height));
   }
   
   setTargetLocation(pos: Point) {

@@ -15,6 +15,16 @@ export interface PhysicsProps {
   drag: number;
 }
 
+export class Color {
+  
+  constructor(public r: number, public g: number, public b: number) {}
+  
+  toString() {
+    return `rgb(${this.r},${this.g},${this.b})`;
+  }
+  
+}
+
 export class Bounds {
   
   constructor(public x: number, public y: number, public width: number, public height: number) {}
