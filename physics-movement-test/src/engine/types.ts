@@ -3,7 +3,7 @@ export interface Point {
   y: number;
 }
 
-export interface Dimension {
+export interface Size {
   width: number;
   height: number;
 }
@@ -22,7 +22,6 @@ export class Color {
   toString() {
     return `rgb(${this.r},${this.g},${this.b})`;
   }
-  
 }
 
 export class Bounds {
@@ -59,5 +58,4 @@ export class Bounds {
     
     return false;
   }
-
 }

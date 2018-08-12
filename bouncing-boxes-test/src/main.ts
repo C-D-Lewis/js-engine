@@ -10,8 +10,8 @@ const randomInt = (max: number) => Math.round(Math.random() * max);
 (() => {
   const engine = new Engine({
     init: () => {
-      bouncingBox = new BouncingBox(engine, new Bounds(randomInt(400), randomInt(400), 100, 100), 'red', 10);
-      bouncingBox2 = new BouncingBox(engine, new Bounds(randomInt(200), randomInt(200), 50, 50), 'blue', 15);
+      bouncingBox = new BouncingBox(engine, new Bounds(randomInt(500), randomInt(400), 100, 100), 'red', 2);
+      bouncingBox2 = new BouncingBox(engine, new Bounds(randomInt(200), randomInt(200), 50, 50), 'blue', 5);
       
       engine.collisionManager.add(bouncingBox);
       engine.collisionManager.add(bouncingBox2);

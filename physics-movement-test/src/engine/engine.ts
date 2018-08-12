@@ -6,12 +6,11 @@ declare const window: any;
 
 export default class Engine {
   
+  public collisionManager: CollisionManager = new CollisionManager();
+  private fpsCounter: FpsCounter = new FpsCounter();
+  private canvas: any;
   public width: number = 0;
   public height: number = 0;
-  public collisionManager: CollisionManager = new CollisionManager();
-
-  private canvas: any;
-  private fpsCounter: FpsCounter = new FpsCounter();
   private firstFrame: boolean = false;
   private paused: boolean = false;
 
@@ -59,8 +58,8 @@ export default class Engine {
       this.options.init();
     }
 
-    this.options.update();
     this.collisionManager.testAll();
+    this.options.update();
 
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, ctx.width, ctx.height);
@@ -73,10 +72,7 @@ export default class Engine {
     if (!this.options.mouseMove) return;
 
     const boundingRect = this.canvas.getBoundingClientRect();
-    this.options.mouseMove({
-      x: e.clientX - boundingRect.left,
-      y: e.clientY - boundingRect.top
-    });
+    this.options.mouseMove({ x: e.clientX - boundingRect.left, y: e.clientY - boundingRect.top });
   }
 
   onMouseClick(e: any) {
@@ -102,7 +98,6 @@ export default class Engine {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
   }
-
 }
 
 class CollisionManager {
@@ -127,7 +122,6 @@ class CollisionManager {
       });
     });
   }
-  
 }
 
 class FpsCounter {
@@ -146,5 +140,4 @@ class FpsCounter {
 
     Graphics.drawText(ctx, `${this.current} FPS`, 'white', { x: 20, y: 20 });
   }
-  
 }

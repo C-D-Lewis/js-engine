@@ -1,11 +1,8 @@
-import {
-  Bounds,
-  Point,
-} from './engine/types';
+import { Bounds, Point } from './engine/types';
+import { Map } from './engine/pathfinding';
+import { toRadians, randomInt } from './engine/util';
 import Engine from './engine/engine';
 import Pawn from './entity/Pawn';
-import { toRadians, randomInt } from './engine/util';
-import { Map } from './engine/pathfinding';
 
 const GRID_SIZE = { width: 40, height: 20 };
 

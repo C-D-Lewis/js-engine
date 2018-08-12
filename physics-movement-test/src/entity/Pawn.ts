@@ -1,10 +1,8 @@
-import {
-  Bounds, Point, PhysicsProps,
-} from '../engine/types';
-import Engine from '../engine/engine';
-import Entity from '../engine/entity';
+import { Bounds, Point, PhysicsProps } from '../engine/types';
 import { drawLine } from '../engine/graphics';
 import { toRadians } from '../engine/util';
+import Engine from '../engine/engine';
+import Entity from '../engine/entity';
 
 export default class Pawn extends Entity {
 
@@ -76,10 +74,7 @@ export default class Pawn extends Entity {
     ctx.strokeStyle = 'green';
     const headingDx = 15 * Math.sin(this.targetHeading);
     const headingDy = 15 * Math.cos(this.targetHeading);
-    p2 = {
-      x: this.bounds.x + headingDx,
-      y: this.bounds.y + headingDy,
-    };
+    p2 = { x: this.bounds.x + headingDx, y: this.bounds.y + headingDy };
     drawLine(ctx, origin, p2);
     
     // targetLocation vector
@@ -109,5 +104,4 @@ export default class Pawn extends Entity {
   }
   
   onCollide(other: Entity) {}
-
 }

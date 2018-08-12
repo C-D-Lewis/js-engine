@@ -1,9 +1,9 @@
 import { Point } from './types';
 
-export const drawText = (ctx: any, msg: string, color: string, pos: Point) => {
+export const drawText = (ctx: any, message: string, color: string, position: Point) => {
   ctx.font = '20px Arial';
   ctx.fillStyle = color;
-  ctx.fillText(msg, pos.x, pos.y);
+  ctx.fillText(message, position.x, position.y);
 };
 
 export const drawLine = (ctx: any, from: Point, to: Point) => {

@@ -5,9 +5,7 @@ export default abstract class Entity {
   constructor(protected bounds: Bounds) {}
 
   abstract update(): void;
-
   abstract draw(ctx: any): void;
-  
   abstract onCollide(other: Entity): void;
 
   move(dx: number, dy: number) {
@@ -22,5 +20,4 @@ export default abstract class Entity {
   collidesWith(other: Entity) {
     return this.bounds.intersects(other.getBounds());
   }
-
 }
